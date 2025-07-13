@@ -1,0 +1,81 @@
+version: 2
+
+models:
+  - name: dim_product
+    description: "Contains data related to Products"
+    columns:
+      - name: product_id
+        description: "The primary key for Product_Dim"
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: "Name of the product"
+        tests:
+          - not_null
+      - name: product_category
+        description: "Category per product"
+        tests:
+          - not_null
+      - name: brand
+        description: "Brand of the product"
+      - name: unit_price
+        description: "Unit price of the product"
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "{{ unit_price }} > 0"
+
+  - name: dim_store
+    description: "Contain data related to Stores"
+    columns:
+      - name: store_id
+        description: "The primary key for Store_Dim"
+        tests:
+          - unique
+          - not_null
+      - name: store_name
+        description: "Name of the store"
+        tests: 
+          - not_null
+      - name: City
+        description: "City in which store is located"
+      - name: manager_name
+        description: "Name of store manager"
+        tests:
+          - not_null
+
+  - name: dim_manager_feedback
+    description: "Contain feedback data related to store manager"
+    columns:
+      - name: feedback_id
+        description: "The primary key for Feedback_Dim"
+        tests:
+          - unique
+          - not_null
+      - name: store_id
+        description: "Store for which feedback was recorded"
+        tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_store')
+              field: store_id
+      - name: manager_name
+        description: "Name of store manager"
+        tests:
+          - not_null
+      - name: feedback_date
+        description: "Date when feedback was recorded"
+        tests: 
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "{{ feedback_date }} <= CURRENT_DATE()"
+      - name: rating
+        description: "Rating given for store manager"
+  
+  - name: dim_date
+    description: 'dates from year 2024 to 2025'
+
+      
+
+

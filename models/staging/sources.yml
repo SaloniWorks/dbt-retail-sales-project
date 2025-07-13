@@ -1,0 +1,8 @@
+sources:
+  - name: Retail_Raw_Data
+    schema: retail_data
+    tables:
+      - name: Product_Raw
+      - name: Store_Raw
+      - name: Feedback_Raw
+      - name: Sales_Raw 

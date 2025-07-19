@@ -29,7 +29,9 @@ This project demonstrates an end-to-end data pipeline designed for retail sales 
 
 ## Folder Structure
 
-<pre> ```text dbt-retail-sales-project/ ├── dags/ # Airflow DAGs for data ingestion (GCS → BigQuery) ├── dbt_project.yml ├── models/ │ ├── staging/ # Cleansed versions of raw tables │ ├── snapshots/ # SCD Type 2 historical tracking │ └── marts/ │ ├── dim/ # Dimension tables │ └── fact/ # Fact tables └── README.md ``` </pre>
+<pre> ```
+  text dbt-retail-sales-project/ ├── dags/ # Airflow DAGs for data ingestion (GCS → BigQuery) ├── dbt_project.yml ├── models/ │ ├── staging/ # Cleansed versions of raw tables │ ├── snapshots/ # SCD Type 2 historical tracking │ └── marts/ │ ├── dim/ # Dimension tables │ └── fact/ # Fact tables └── README.md 
+  ``` </pre>
 
 
 

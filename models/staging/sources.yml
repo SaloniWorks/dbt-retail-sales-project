@@ -1,6 +1,7 @@
 sources:
   - name: Retail_Raw_Data
-    schema: retail_data
+    database: RETAIL_DB
+    schema: RAW
     tables:
       - name: Product_Raw
       - name: Store_Raw

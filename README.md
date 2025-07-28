@@ -1,12 +1,16 @@
 # dbt Retail Sales Data Pipeline Project
 
-This project demonstrates an end-to-end data pipeline designed for retail sales analytics using Google Cloud Platform (GCP), Apache Airflow, and dbt Core + dbt Cloud.
-
+This project demonstrates an end-to-end data pipeline designed for retail sales analytics using **Google Cloud Platform (GCP), Snowflake, Apache Airflow, and dbt Core + dbt Cloud**.
+---
 ## Project Overview
-
+This project demonstrates an end-to-end ELT pipeline for retail sales analytics using two cloud platforms: Google Cloud Platform (BigQuery) and Snowflake.
 - **Data Source:** Synthetic retail sales data generated via Mockaroo  
-- **Storage:** Raw CSVs uploaded to **Google Cloud Storage (GCS)**  
-- **Ingestion:** Airflow DAG ingests raw data into **BigQuery staging tables**  
+- **Storage:**
+  - **BigQuery:** Raw CSVs are stored in Google Cloud Storage (GCS)
+  - **Snowflake:** Raw CSVs are stored locally and staged to Snowflake internal stages
+- **Ingestion:**
+  - **BigQuery:** Raw CSVs are uploaded to Google Cloud Storage (GCS) and ingested using Apache Airflow DAGs.
+  - **Snowflake:** CSVs are staged using SnowSQL and loaded into Snowflake tables via COPY INTO commands. 
 - **Transformation:** dbt Core models include:
   - Staging models  
   - SCD Type 2 snapshot  
@@ -18,15 +22,16 @@ This project demonstrates an end-to-end data pipeline designed for retail sales 
   - dbt built-in tests  
   - `dbt_utils` macros  
   - Custom SQL tests  
-
+---
+---
 ## Tech Stack
 
-- Google Cloud Platform (BigQuery, Cloud Storage)  
+- Google Cloud Platform (BigQuery, Cloud Storage, Snowflake)  
 - Apache Airflow  
 - dbt Core & dbt Cloud  
 - SQL, Python  
 - Git, GitHub  
-
+---
 ## Folder Structure
 
 ```text
@@ -43,7 +48,7 @@ dbt-retail-sales-project/
 ```
 
 
-> **Note:** While `dags/` is not part of the dbt framework, it’s included here to reflect the complete pipeline. The Airflow DAG handles ingestion of raw data from GCS into BigQuery. The dbt models then transform this ingested data into analytics-ready tables.
+> **Note:** While dags/ is not part of the dbt framework, it’s included here to reflect the complete pipeline. The Airflow DAG handles GCS ingestion, and SnowSQL handles Snowflake ingestion.
 
 ## Key Features
 
@@ -54,23 +59,35 @@ dbt-retail-sales-project/
 
  ## Multi-Cloud Target Support
 
-This project supports both BigQuery and Snowflake as data warehouses.
+This project is designed to support both BigQuery and Snowflake as data warehouse targets with minimal changes, demonstrating flexibility and adaptability in modern data engineering workflows.
+  1. BigQuery Integration
 
-  Warehouse-specific configurations for source.yml and profiles.yml:
+    Ingestion: Automated using **Apache Airflow** to load raw CSVs from **Google Cloud Storage (GCS)** into **BigQuery** staging tables.
 
-    BigQuery:
+    Transformation: **dbt Core** models (staging, snapshots, marts) run against **BigQuery** using the configured **profiles.yml** and **sources.yml** file.
 
-        schema: retail_data in sources.yml
+    Date Dimension: Custom logic written using BigQuery-compatible SQL functions for calendar generation.
 
-        profiles.yml points to BigQuery project and dataset.
+    Scheduling: Orchestrated using **dbt Cloud**, with **GitHub** as the version control system.
 
-    Snowflake:
+ 2.  Snowflake Integration
 
-        database: RETAIL_DB and schema: RAW in sources.yml
+    Ingestion: Handled using **SnowSQL**, where raw CSVs are uploaded to internal stages and loaded using **COPY INTO** commands.
 
-        profiles.yml points to Snowflake account, warehouse, role, etc.
+    Transformation: The same **dbt Core** models and snapshots used for **BigQuery** run seamlessly on **Snowflake** with dedicated **profiles.yml** and **sources.yml** configurations.
 
+    Date Dimension: Custom logic rewritten using Snowflake-compatible SQL functions for calendar generation.
 
+    Orchestration: Scheduled via **dbt Cloud** with a separate environment targeting Snowflake.
 
-    The project was originally built on BigQuery and later extended to support Snowflake, demonstrating adaptability across cloud data platforms.
+3.  Switching Between Targets
 
+    The project uses a single codebase with the ability to switch targets **(BigQuery or Snowflake)** by:
+
+        Modifying the target key in the **profiles.yml** 
+
+        Adjusting the sources.yml as needed
+
+        Ensuring SQL logic are compatible with the selected platform
+
+All sensitive configuration (e.g., credentials, profiles.yml) remains outside the repository to ensure security and separation of concerns.

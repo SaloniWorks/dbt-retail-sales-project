@@ -87,6 +87,6 @@ The project uses a single codebase with the ability to switch targets **(BigQuer
 
     Adjusting the sources.yml as needed
 
-    Ensuring SQL logic are compatible with the selected platform
+    Ensuring SQL logic is compatible with the selected platform
 
 All sensitive configuration (e.g., credentials, profiles.yml) remains outside the repository to ensure security and separation of concerns.

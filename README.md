@@ -81,12 +81,12 @@ This project is designed to support both BigQuery and Snowflake as data warehous
 
 3.  Switching Between Targets
 
-    The project uses a single codebase with the ability to switch targets **(BigQuery or Snowflake)** by:
+The project uses a single codebase with the ability to switch targets **(BigQuery or Snowflake)** by:
 
-        Modifying the target key in the profiles.yml
+    Modifying the target key in the profiles.yml
 
-        Adjusting the sources.yml as needed
+    Adjusting the sources.yml as needed
 
-        Ensuring SQL logic are compatible with the selected platform
+    Ensuring SQL logic are compatible with the selected platform
 
 All sensitive configuration (e.g., credentials, profiles.yml) remains outside the repository to ensure security and separation of concerns.

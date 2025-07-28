@@ -31,7 +31,7 @@ This project demonstrates an end-to-end data pipeline designed for retail sales 
 
 ```text
 dbt-retail-sales-project/
-├── dags/                 # Airflow DAGs for data ingestion (GCS → BigQuery)
+├── dags/                 # Airflow DAGs for data ingestion (GCS → BigQuery) / SnowSQL for data ingestion in snowflake
 ├── dbt_project.yml
 ├── models/
 │   ├── staging/          # Cleansed versions of raw tables
@@ -52,4 +52,25 @@ dbt-retail-sales-project/
 -  Clean, modular dbt project structure  
 -  Reproducible pipeline with automated scheduling and testing  
 
+ ## Multi-Cloud Target Support
+
+This project supports both BigQuery and Snowflake as data warehouses.
+
+  Warehouse-specific configurations for source.yml and profiles.yml:
+
+    BigQuery:
+
+        schema: retail_data in sources.yml
+
+        profiles.yml points to BigQuery project and dataset.
+
+    Snowflake:
+
+        database: RETAIL_DB and schema: RAW in sources.yml
+
+        profiles.yml points to Snowflake account, warehouse, role, etc.
+
+
+
+    The project was originally built on BigQuery and later extended to support Snowflake, demonstrating adaptability across cloud data platforms.
 
